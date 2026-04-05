@@ -5,7 +5,7 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, RotateCcw, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Card {
   cat: string;
@@ -66,7 +66,17 @@ const cardsData: Card[] = [
   { cat: '数据运营', term: 'Bounce Rate', cn: '跳出率', desc: '只访问一个页面就离开的用户占总访问的比例。', ex: '' }
 ];
 
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export default function App() {
+  const [deck] = useState<Card[]>(() => shuffleArray(cardsData));
   const [currentCategory, setCurrentCategory] = useState('全部');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -75,9 +85,9 @@ export default function App() {
 
   const filteredCards = useMemo(() => {
     return currentCategory === '全部' 
-      ? cardsData 
-      : cardsData.filter(c => c.cat === currentCategory);
-  }, [currentCategory]);
+      ? deck 
+      : deck.filter(c => c.cat === currentCategory);
+  }, [currentCategory, deck]);
 
   const currentCard = filteredCards[currentIndex];
 
@@ -102,51 +112,38 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 text-slate-900 font-sans selection:bg-indigo-100 relative overflow-hidden flex flex-col">
-      {/* Decorative Background Blobs */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-indigo-200/40 blur-3xl" />
-        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-purple-200/40 blur-3xl" />
-        <div className="absolute -bottom-[20%] left-[20%] w-[60%] h-[50%] rounded-full bg-blue-200/40 blur-3xl" />
-      </div>
-
-      <div className="max-w-3xl w-full mx-auto px-6 py-12 flex-1 flex flex-col items-center justify-center">
-        {/* Header */}
-        <header className="text-center mb-10 w-full">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center justify-center p-3 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-slate-100 mb-6"
-          >
-            <span className="text-3xl">👨‍💻</span>
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
+    <div className="min-h-screen bg-surface text-on-surface font-sans selection:bg-surface-container-low relative flex flex-col">
+      <div className="max-w-4xl w-full mx-auto px-6 py-16 md:py-24 flex-1 flex flex-col items-center justify-center">
+        {/* Editorial Header */}
+        <header className="text-center mb-16 w-full flex flex-col items-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4"
+            className="text-4xl md:text-6xl font-serif tracking-tight text-on-surface mb-6 text-balance"
           >
-            Web & App 术语闪卡
+            The Digital Gallery
+            <span className="block text-2xl md:text-3xl text-primary mt-2 font-sans font-light">Web & App Terminology</span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-slate-500 text-lg md:text-xl max-w-lg mx-auto"
+            className="text-primary-dim text-lg max-w-lg mx-auto leading-relaxed"
           >
-            提炼高频黑话，快速看懂产品/设计/前端在聊啥
+            A curated exhibition of high-frequency product, design, and engineering lexicon.
           </motion.p>
         </header>
 
-        {/* Categories */}
-        <nav className="flex flex-wrap justify-center gap-3 mb-12 w-full">
+        {/* Categories - Tonal Shifts */}
+        <nav className="flex flex-wrap justify-center gap-4 mb-16 w-full">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-6 py-3 rounded-[1.5rem] text-sm font-medium transition-all duration-300 ${
                 currentCategory === cat
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 scale-105 ring-2 ring-indigo-600 ring-offset-2 ring-offset-slate-50'
-                  : 'bg-white/80 backdrop-blur-sm text-slate-600 hover:bg-white hover:text-indigo-600 hover:shadow-md border border-slate-200/60'
+                  ? 'bg-gradient-to-b from-primary to-primary-dim text-white shadow-ambient'
+                  : 'bg-surface-container-low text-on-surface hover:bg-surface-container'
               }`}
             >
               {cat}
@@ -155,61 +152,59 @@ export default function App() {
         </nav>
 
         {/* Flashcard Container */}
-        <div className="w-full max-w-lg aspect-[4/3] relative perspective-1000 mb-10">
+        <div className="w-full max-w-2xl h-[420px] sm:h-[450px] md:h-[480px] relative perspective-1000 mb-16">
           <AnimatePresence mode="wait">
             <motion.div
               key={`${currentCategory}-${currentIndex}`}
-              initial={{ opacity: 0, x: 30, rotateY: -10 }}
-              animate={{ opacity: 1, x: 0, rotateY: 0 }}
-              exit={{ opacity: 0, x: -30, rotateY: 10 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="w-full h-full cursor-pointer group"
               onClick={() => setIsFlipped(!isFlipped)}
             >
               <motion.div
                 className="w-full h-full relative preserve-3d"
                 animate={{ rotateY: isFlipped ? 180 : 0 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 25 }}
+                transition={{ type: 'spring', stiffness: 100, damping: 20 }}
               >
                 {/* Front Face */}
-                <div className="absolute inset-0 backface-hidden bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-2xl shadow-indigo-500/10 border border-white flex flex-col items-center justify-center p-8 text-center transition-transform duration-300 group-hover:scale-[1.02]">
-                  <div className="absolute top-8 left-8 right-8 flex justify-between items-center opacity-60">
-                    <span className="text-xs font-bold uppercase tracking-widest text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">
+                <div className="absolute inset-0 backface-hidden bg-surface-container-lowest rounded-[2rem] shadow-ambient flex flex-col p-8 sm:p-10 md:p-16 transition-transform duration-500 group-hover:-translate-y-2 overflow-hidden">
+                  {/* Asymmetric layout: Category top right, Term bottom left */}
+                  <div className="flex justify-between items-start w-full">
+                    <span className="text-xs font-mono text-primary-dim tracking-widest uppercase">
+                      No. {String(currentIndex + 1).padStart(3, '0')}
+                    </span>
+                    <span className="text-sm font-medium text-primary bg-surface-container-low px-4 py-1.5 rounded-full shrink-0 ml-4">
                       {currentCard.cat}
                     </span>
-                    <span className="text-xs font-mono text-slate-400">
-                      {currentIndex + 1} / {filteredCards.length}
-                    </span>
                   </div>
-                  
-                  <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-indigo-600 to-violet-600 tracking-tight leading-tight px-4">
-                    {currentCard.term}
-                  </h2>
-                  
-                  <div className="absolute bottom-8 text-slate-300 flex flex-col items-center gap-2">
-                    <RotateCcw className="w-6 h-6 animate-pulse text-indigo-300" />
-                    <span className="text-xs font-medium text-slate-400">点击翻转</span>
+
+                  <div className="flex-1 flex items-end pb-2 sm:pb-4 w-full">
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif tracking-tight text-on-surface leading-[1.1] break-words w-full text-balance">
+                      {currentCard.term}
+                    </h2>
                   </div>
                 </div>
 
                 {/* Back Face */}
-                <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] shadow-2xl shadow-indigo-600/20 border border-indigo-400/30 flex flex-col items-center justify-center p-8 md:p-10 text-center rotate-y-180 text-white transition-transform duration-300 group-hover:scale-[1.02]">
-                  <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white tracking-wide">
-                    {currentCard.cn}
-                  </h3>
-                  <p className="text-lg md:text-xl leading-relaxed mb-8 text-indigo-50 font-medium">
-                    {currentCard.desc}
-                  </p>
-                  {currentCard.ex && (
-                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 w-full text-left border border-white/10 shadow-inner">
-                      <div className="flex items-start gap-3">
-                        <Info className="w-5 h-5 mt-0.5 flex-shrink-0 text-indigo-200" />
-                        <p className="text-sm md:text-base text-indigo-50 leading-relaxed">
+                <div className="absolute inset-0 backface-hidden bg-surface-container-lowest rounded-[2rem] shadow-ambient flex flex-col p-8 sm:p-10 md:p-16 rotate-y-180 transition-transform duration-500 group-hover:-translate-y-2 overflow-y-auto">
+                  <div className="flex-1 flex flex-col justify-center">
+                    <h3 className="text-3xl md:text-4xl font-serif tracking-tight text-on-surface mb-4 sm:mb-6">
+                      {currentCard.cn}
+                    </h3>
+                    <p className="text-base sm:text-lg md:text-xl leading-[1.6] text-primary-dim mb-6 sm:mb-8 max-w-lg">
+                      {currentCard.desc}
+                    </p>
+                    {currentCard.ex && (
+                      <div className="bg-surface-container-low rounded-[1.5rem] p-5 sm:p-6 w-full text-left">
+                        <p className="text-sm md:text-base text-primary leading-relaxed flex gap-3">
+                          <span className="font-serif italic text-primary-dim shrink-0">e.g.</span>
                           {currentCard.ex}
                         </p>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
@@ -217,22 +212,22 @@ export default function App() {
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-6 md:gap-10 w-full max-w-md justify-between px-4">
+        <div className="flex items-center gap-8 w-full max-w-md justify-between px-4">
           <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="p-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/60 text-slate-700 hover:bg-white hover:text-indigo-600 hover:shadow-lg hover:-translate-x-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:shadow-none transition-all duration-200"
+            className="p-4 rounded-[1.5rem] bg-surface-container-lowest shadow-ambient text-on-surface hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-6 h-6" strokeWidth={1.5} />
           </button>
-          
-          <div className="flex-1 flex flex-col items-center px-4">
-            <div className="w-full h-2 bg-slate-200/60 rounded-full overflow-hidden backdrop-blur-sm">
-              <motion.div 
-                className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full"
+
+          <div className="flex-1 flex flex-col items-center">
+            <div className="w-full h-1 bg-surface-container-low rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-primary"
                 initial={{ width: 0 }}
                 animate={{ width: `${((currentIndex + 1) / filteredCards.length) * 100}%` }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
               />
             </div>
           </div>
@@ -240,12 +235,13 @@ export default function App() {
           <button
             onClick={handleNext}
             disabled={currentIndex === filteredCards.length - 1}
-            className="p-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/60 text-slate-700 hover:bg-white hover:text-indigo-600 hover:shadow-lg hover:translate-x-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:shadow-none transition-all duration-200"
+            className="p-4 rounded-[1.5rem] bg-surface-container-lowest shadow-ambient text-on-surface hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-6 h-6" strokeWidth={1.5} />
           </button>
         </div>
       </div>
     </div>
   );
 }
+

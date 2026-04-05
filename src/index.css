@@ -1,7 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Outfit", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Noto Serif SC", ui-serif, Georgia, serif;
+
+  --color-surface: #f9f9f7;
+  --color-surface-container-low: #f2f4f2;
+  --color-surface-container: #ecefec;
+  --color-surface-container-lowest: #ffffff;
+  --color-primary: #5f5e5e;
+  --color-primary-dim: #535252;
+  --color-on-surface: #2d3432;
+  --color-outline-variant: rgba(173, 179, 176, 0.15);
+
+  --shadow-ambient: 0 20px 40px rgba(45, 52, 50, 0.06);
 }
 
 @layer utilities {
@@ -18,8 +30,11 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 body {
-  @apply antialiased;
+  @apply antialiased bg-surface text-on-surface;
 }
