@@ -16,17 +16,54 @@ interface Card {
 }
 
 const cardsData: Card[] = [
-  { cat: '页面区块', term: 'Hero Section', cn: '英雄区', desc: '页面首屏最大最显眼的区域。第一时间告诉用户这是什么。', ex: '常见：大图背景 + “欢迎来到XX”大标题 + 主CTA按钮' },
-  { cat: '页面区块', term: 'CTA (Call To Action)', cn: '行动召唤', desc: '网页/APP里催促用户点击的关键按钮或文案。', ex: '例如：“立即下单”、“免费试用”、“加入购物车”' },
-  { cat: '页面区块', term: 'Modal / Popup', cn: '弹窗 / 模态框', desc: '点击后弹出的浮层，会遮住后面页面，打断当前操作。', ex: '例如：登录弹窗、二次确认删除弹窗' },
-  { cat: '页面区块', term: 'Toast / Snackbar', cn: '轻提示', desc: '屏幕中间/底部短暂弹出的小字提示，不打断用户操作。', ex: '例如：“操作成功”、“请先登录”，几秒后自动消失' },
-  { cat: '界面交互', term: 'UI / UX', cn: '用户界面 / 用户体验', desc: 'UI是看得见的按钮色彩布局；UX是好不好用、顺不顺手。', ex: 'UI管长得好不好看，UX管用得爽不爽' },
-  { cat: '界面交互', term: 'Wireframe', cn: '线框图', desc: '黑白低保真草图，只排布功能位置，不画视觉细节。', ex: '设计初期用来和产品经理对齐功能的草稿' },
-  { cat: '界面交互', term: 'Responsive', cn: '响应式设计', desc: '页面能根据屏幕大小自动调整布局结构。', ex: '在电脑上一排看四个卡片，在手机上自动变成一排看一个' },
-  { cat: '前端技术', term: 'Component', cn: '组件', desc: '开发中写好的、可以到处复用的页面模块。', ex: '比如把“主按钮”写成组件，全站调用的都是同一个款式' },
-  { cat: '前端技术', term: 'API', cn: '接口', desc: '前端界面和后端服务器进行数据通信的通道。', ex: '前端通过API向后端拿用户头像和昵称数据' },
-  { cat: '业务数据', term: 'Landing Page', cn: '落地页', desc: '专门用来接住广告/推广流量的单页面，目标性极强。', ex: '百度搜到的广告，点进去推销课程的那一页' },
-  { cat: '业务数据', term: 'Conversion Rate', cn: '转化率', desc: '达成最终目标（注册/付费）的人数除以总访问人数。', ex: '100个人点进来，只有5个人买了，转化率就是5%' }
+  { cat: '基础交互', term: 'CTA', cn: '行动召唤', desc: 'Call To Action，引导用户执行操作的按钮或文案。', ex: '如立即购买、注册、提交' },
+  { cat: '基础交互', term: 'UI', cn: '用户界面', desc: 'User Interface，用户看得见的界面元素。', ex: '包括布局、按钮、图标、样式等' },
+  { cat: '基础交互', term: 'UX/UE', cn: '用户体验', desc: 'User Experience，产品使用过程中的感受、流程合理性与易用性。', ex: '' },
+  { cat: '页面区块', term: 'Hero Section', cn: '英雄区', desc: '页面首屏最显眼的大区域。', ex: '通常包含大图、标题、副标题与主CTA' },
+  { cat: '页面区块', term: 'Header', cn: '头部导航栏', desc: '页面最顶部区域。', ex: '包含Logo、导航菜单、搜索、登录、购物车等' },
+  { cat: '页面区块', term: 'Footer', cn: '页脚', desc: '页面最底部区域。', ex: '包含版权信息、联系方式、链接、备案信息等' },
+  { cat: '页面区块', term: 'Banner', cn: '横幅', desc: '横向长条区域。', ex: '用于广告、活动公告或重要提示' },
+  { cat: '页面区块', term: 'Card', cn: '卡片', desc: '模块化容器。', ex: '用于包裹图片、标题、简介、操作按钮等内容' },
+  { cat: '页面区块', term: 'Grid', cn: '网格布局', desc: '将内容按行列整齐排列的布局方式。', ex: '常用于卡片列表' },
+  { cat: '页面区块', term: 'Sidebar', cn: '侧边栏', desc: '页面左侧或右侧的垂直菜单区域。', ex: '常见于后台管理系统' },
+  { cat: '页面区块', term: 'Tab', cn: '标签页', desc: '可点击切换不同内容的分组控件。', ex: '如全部、待付款、已完成' },
+  { cat: '页面区块', term: 'Carousel/Slider', cn: '轮播图', desc: '可自动或手动切换的图片/内容组件。', ex: '多用于首页展示' },
+  { cat: '页面区块', term: 'Modal/Popup', cn: '模态框/弹窗', desc: '点击后弹出并覆盖原页面的浮层。', ex: '用于登录、确认、详情等' },
+  { cat: '页面区块', term: 'Toast/Snackbar', cn: '轻提示', desc: '屏幕底部或中间短暂弹出的文字提示。', ex: '如操作成功、请先登录' },
+  { cat: '页面区块', term: 'Placeholder', cn: '占位区', desc: '内容加载前显示的灰色占位块。', ex: '提升加载体验' },
+  { cat: '页面区块', term: 'Empty State', cn: '空状态', desc: '列表无数据时展示的页面。', ex: '如暂无订单、暂无消息' },
+  { cat: '页面区块', term: 'Feature Section', cn: '功能区', desc: '专门展示产品核心功能、优势、特点的区域。', ex: '' },
+  { cat: '页面区块', term: 'Testimonial/Review Section', cn: '评价区', desc: '展示用户评论、口碑、客户反馈的区域。', ex: '' },
+  { cat: '页面区块', term: 'CTA Section', cn: '行动召唤区', desc: '页面中专门引导用户执行关键操作的大区域。', ex: '' },
+  { cat: '设计流程', term: 'Wireframe', cn: '线框图', desc: '低保真黑白草图。', ex: '用于规划页面结构与元素位置' },
+  { cat: '设计流程', term: 'Mockup', cn: '高保真原型', desc: '接近最终视觉效果的设计稿。', ex: '通常不可交互' },
+  { cat: '设计流程', term: 'Prototype', cn: '可交互原型', desc: '可点击、可跳转页面。', ex: '用于演示产品流程的demo' },
+  { cat: '设计流程', term: 'Responsive', cn: '响应式', desc: '页面可自适应手机、平板、电脑等不同屏幕尺寸。', ex: '' },
+  { cat: '设计流程', term: 'Breakpoint', cn: '断点', desc: '响应式布局中，屏幕宽度触发布局变化的临界值。', ex: '' },
+  { cat: '设计流程', term: 'Palette', cn: '色彩规范', desc: '产品的主色、辅助色、中性色等颜色体系。', ex: '' },
+  { cat: '设计流程', term: 'Typography', cn: '字体规范', desc: '产品的字体、字号、字重、行高、间距等文字规则。', ex: '' },
+  { cat: '业务功能', term: 'Landing Page', cn: '落地页', desc: '广告或推广链接跳转进来的单独宣传页面。', ex: '' },
+  { cat: '业务功能', term: 'Homepage', cn: '首页', desc: '产品的主页面。', ex: '用户进入后看到的第一个页面' },
+  { cat: '业务功能', term: 'Dashboard', cn: '数据看板', desc: '后台系统首页。', ex: '集中展示数据统计、核心指标与快捷操作' },
+  { cat: '业务功能', term: 'Onboarding', cn: '新用户引导', desc: '首次打开APP时的新手教程、功能介绍流程。', ex: '' },
+  { cat: '业务功能', term: 'Paywall', cn: '付费墙', desc: '限制未付费用户查看完整内容的机制。', ex: '' },
+  { cat: '业务功能', term: 'AB Test', cn: 'A/B测试', desc: '同时上线两个版本，对比数据以选择更优方案。', ex: '' },
+  { cat: '视觉设计', term: 'White Space', cn: '留白', desc: '页面中无内容的空白区域。', ex: '提升界面呼吸感与可读性' },
+  { cat: '视觉设计', term: 'Hierarchy', cn: '视觉层级', desc: '通过大小、颜色、间距引导用户视线的主次顺序。', ex: '' },
+  { cat: '视觉设计', term: 'Consistency', cn: '一致性', desc: '全产品保持统一的视觉风格与交互逻辑。', ex: '' },
+  { cat: '视觉设计', term: 'Asset', cn: '设计素材', desc: '图标、图片、插画、动效等设计资源。', ex: '' },
+  { cat: '前端技术', term: 'Component', cn: '组件', desc: '可复用的UI模块。', ex: '如按钮、输入框、卡片、列表等' },
+  { cat: '前端技术', term: 'State', cn: '状态', desc: '界面或组件的不同形态。', ex: '如加载中、成功、失败、禁用' },
+  { cat: '前端技术', term: 'API', cn: '接口', desc: '前后端数据交互的通信方式。', ex: '' },
+  { cat: '前端技术', term: 'Fetch/Load', cn: '数据加载', desc: '从服务器获取并展示数据的过程。', ex: '' },
+  { cat: '前端技术', term: 'Cache', cn: '缓存', desc: '临时存储数据以加快加载速度、节省流量。', ex: '' },
+  { cat: '前端技术', term: 'Render', cn: '渲染', desc: '将代码转换为用户可见界面的过程。', ex: '' },
+  { cat: '前端技术', term: 'Performance', cn: '性能', desc: '页面加载速度、交互流畅度、资源占用等指标。', ex: '' },
+  { cat: '数据运营', term: 'PV', cn: '页面浏览量', desc: 'Page View，页面被访问的次数。', ex: '刷新计为一次' },
+  { cat: '数据运营', term: 'UV', cn: '独立用户', desc: 'Unique Visitor，一定时间内访问产品的独立用户数。', ex: '' },
+  { cat: '数据运营', term: 'Retention', cn: '留存', desc: '用户在一段时间后仍继续使用产品的比例。', ex: '' },
+  { cat: '数据运营', term: 'Conversion Rate', cn: '转化率', desc: '用户从访问到完成目标行为（注册、付费等）的比例。', ex: '' },
+  { cat: '数据运营', term: 'Bounce Rate', cn: '跳出率', desc: '只访问一个页面就离开的用户占总访问的比例。', ex: '' }
 ];
 
 export default function App() {
@@ -163,14 +200,16 @@ export default function App() {
                   <p className="text-lg md:text-xl leading-relaxed mb-8 text-indigo-50 font-medium">
                     {currentCard.desc}
                   </p>
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 w-full text-left border border-white/10 shadow-inner">
-                    <div className="flex items-start gap-3">
-                      <Info className="w-5 h-5 mt-0.5 flex-shrink-0 text-indigo-200" />
-                      <p className="text-sm md:text-base text-indigo-50 leading-relaxed">
-                        {currentCard.ex}
-                      </p>
+                  {currentCard.ex && (
+                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 w-full text-left border border-white/10 shadow-inner">
+                      <div className="flex items-start gap-3">
+                        <Info className="w-5 h-5 mt-0.5 flex-shrink-0 text-indigo-200" />
+                        <p className="text-sm md:text-base text-indigo-50 leading-relaxed">
+                          {currentCard.ex}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
